@@ -1,3 +1,18 @@
+_Note:_ Columns 4 to 69 are as described in the `feature_info.txt` file in the source dataset.  To summarise:
+
+* tAcc and tGyr are 3-axial accelerometer and gyroscope signals (prefix 't' to denote time domain), captured at a constant rate of 50 Hz.  The signals were filtered using a median filter and a 3rd order low pass Butterworth filter with a corner frequency of 20 Hz to remove noise. 
+* tBodyAcc and tGravityAcc are body and gravity acceleration signals, derived from tAcc using another low pass Butterworth filter with a corner frequency of 0.3 Hz. 
+* tBodyAccJerk and tBodyGyroJerk are the body linear acceleration and angular velocity, derived in the time domain
+* tBodyAccMag, tGravityAccMag, tBodyAccJerkMag, tBodyGyroMag, tBodyGyroJerkMag are the magnitude of these three-dimensional signals
+* fBodyAcc-XYZ, fBodyAccJerk-XYZ, fBodyGyro-XYZ, fBodyAccJerkMag, fBodyGyroMag, fBodyGyroJerkMag (prefix 'f' indicates frequency domain) are the Fast Fourier Transform (FFT) of these signals.
+
+The following suffixes:
+
+* mean(): denotes the Mean value
+* std(): denotes the Standard deviation
+* "-XYZ": denotes the X, Y and Z directions
+
+
 |Column|ColumnName|Description|
 |------:|:-------------------:|:-----------------------------------------|
 |1|subjectID|Identifies the subject who performed the activity|
