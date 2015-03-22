@@ -44,8 +44,11 @@ flatten_dataset <- function(featLUT, actLUT, datadir, prefix) {
       for (c in c("x", "y", "z")) {
         fn <- file.path(datadir, prefix, "Inertial Signals",
                         sprintf("%s_%s_%s_%s.txt", a, b, c, prefix))
-        d <- read.table(fn, stringsAsFactors = FALSE)
-        colnames(d) <- paste(a,b,c,colnames(d),sep="_")
+        d1 <- read.table(fn, stringsAsFactors = FALSE)
+        
+        # Extract only the mean and std 
+        d <- cbind(apply(d1, 1, mean), apply(d1, 1, sd))
+        colnames(d) <- paste(a,b,c, c("mean", "std"), sep="_")
         if (nrow(result) != nrow(d)) { 
           stop(sprintf("Data for %s %s %s does not match expected num of observations",
                         a, b, c))
@@ -54,6 +57,11 @@ flatten_dataset <- function(featLUT, actLUT, datadir, prefix) {
       }
     }
   }
+  
+  # tag for whether this is test or training
+  tag <- c(prefix)
+  names(tag) <- "tag"
+  result <- cbind(result, tag)
   
   return(result)
 }

@@ -5,9 +5,9 @@ The script `run_analysis.R` requires the dataset:
 
 Unzip the dataset in the same directory as the script.  
 
-Edit the `origdataset` variable to point to the unzipped directory (default: "UCI HAR Dataset").  
+Edit the `origdatadir` variable to point to the unzipped directory (default: "UCI HAR Dataset").  
 
-The `outdataset` variable contains the name of the output directory (default: "data").
+The `outdatadir` variable contains the name of the output directory (default: "data").
 
 The script outputs `tidydata.txt` which contains:
 1. Merged training and the test sets.
