@@ -41,3 +41,6 @@ write.table(tidydata, file.path(outdatadir, "tidydata.txt"), row.names=FALSE)
 
 ## From the data set in step 4, creates a second, independent tidy data set 
 ## with the average of each variable for each activity and each subject.
+temp <- group_by(subset(tidydata, select= -tag), subjectID, actCode, actName)
+avgdata <- summarise_each(temp, funs(mean))
+write.table(avgdata, file.path(outdatadir, "avgdata.txt"), row.names=FALSE)
