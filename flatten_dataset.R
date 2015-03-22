@@ -16,20 +16,45 @@ flatten_dataset <- function(featLUT, actLUT, datadir, prefix) {
                         stringsAsFactors = FALSE, 
                         col.names = "subjectID")
   
-  # time-domain feature vectors
+  # time and freq domain feature vectors
   xdata <- read.table(file.path(datadir, prefix, sprintf('X_%s.txt', prefix)), 
                       stringsAsFactors = FALSE)
-  obsCode <- 1:nrow(xdata)
-  xdata <- cbind(obsCode, xdata)
   
-  # freq-domain feature vectors
+  # Extract only the measurements on the mean and standard deviation 
+  # for each measurement. (Note: Non-calculated mean, such as meanFreq, 
+  # gravityMean, etc. are excluded).
+  selected <- grep("(mean|std)[(][)]", featLUT[,2])
+  xdata <- featLUT[,selected]
+  
+  # activity
   ydata <- read.table(file.path(datadir, prefix, sprintf('y_%s.txt', prefix)), 
-                      stringsAsFactors = FALSE)
-  obsCode <- 1:nrow(ydata)
-  ydata <- cbind(obsCode, ydata)
+                      stringsAsFactors = FALSE,
+                      col.names = "actCode")
+  ydata <- left_join(ydata, actLUT, "actCode")
   
-  # sanity check before merging
-  nrow(xdata) == nrow(ydata) || stop("Number of X and y observations do not match\n")
+  # concatenate activity with feature columns
+  if ((nrow(xdata) != nrow(ydata)) || (nrow(subjects) != nrow(ydata))) {
+    stop("Number of observations do not match\n")
+  }
+  result <- cbind(subjects, ydata, xdata);
+
+  # intertial signals
+  for (a in c("body", "total")) {
+    for (b in (if(a=="total") c("acc") else c("acc", "gyro"))) {
+      for (c in c("x", "y", "z")) {
+        fn <- file.path(datadir, prefix, "Inertial Signals",
+                        sprintf("%s_%s_%s_%s.txt", a, b, c, prefix))
+        d <- read.table(fn, stringsAsFactors = FALSE)
+        colnames(d) <- paste(a,b,c,colnames(d),sep="_")
+        if (nrow(result) != nrow(d)) { 
+          stop(sprintf("Data for %s %s %s does not match expected num of observations",
+                        a, b, c))
+        }
+        result <- cbind(result, d)
+      }
+    }
+  }
   
-  xymerged <- merge(xdata, ydata)
+  return(result)
 }
+
