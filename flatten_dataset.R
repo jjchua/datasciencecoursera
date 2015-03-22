@@ -23,8 +23,8 @@ flatten_dataset <- function(featLUT, actLUT, datadir, prefix) {
   # Extract only the measurements on the mean and standard deviation 
   # for each measurement. (Note: Non-calculated mean, such as meanFreq, 
   # gravityMean, etc. are excluded).
-  selected <- grep("(mean|std)[(][)]", featLUT[,2])
-  xdata <- featLUT[,selected]
+  selected <- featLUT[grep("(mean|std)[(][)]", featLUT[,2]), 1]
+  xdata <- xdata[,selected]
   
   # activity
   ydata <- read.table(file.path(datadir, prefix, sprintf('y_%s.txt', prefix)), 

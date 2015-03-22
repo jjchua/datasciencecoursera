@@ -36,7 +36,8 @@ testSet <- flatten_dataset(featLUT, actLUT, origdataset, "test")
 trainSet <- flatten_dataset(featLUT, actLUT, origdataset, "train")
 
 ## Merges the training and the test sets to create one data set.
-dataAll <- rbind(trainSet, testSet)
+tidydata <- rbind(trainSet, testSet)
+
 
 ## From the data set in step 4, creates a second, independent tidy data set 
 ## with the average of each variable for each activity and each subject.
