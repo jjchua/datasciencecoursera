@@ -1,5 +1,7 @@
 # run_analysis.R
 
+library(dplyr)
+
 ## Input and output directories
 origdataset <- "UCI HAR Dataset"
 outdataset <- "data"
@@ -14,7 +16,17 @@ if (!file.exists(outdataset)) {
   dir.create(outdataset)
 }
 
+## Look-up tables
+featLUT <- read.table(file.path(origdataset, 'features.txt'), 
+                       col.name = c("featCode", "featName"), 
+                       stringsAsFactors = FALSE)
+actLUT <- read.table(file.path(origdataset, 'activity_labels.txt'), 
+                         col.name = c("actCode", "actName"), 
+                         stringsAsFactors = FALSE)
+
 ## Merges the training and the test sets to create one data set.
+
+
 
 ## Extracts only the measurements on the mean and standard deviation 
 ## for each measurement. 
